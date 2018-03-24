@@ -1,0 +1,126 @@
+/*
+ * Copyright (C) 2016 MediaTek Inc.
+
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License version 2 as
+ * published by the Free Software Foundation.
+
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+ * See http://www.gnu.org/licenses/gpl-2.0.html for more details.
+ */
+
+#ifndef __MT6336_IRQ_H
+#define __MT6336_IRQ_H
+
+typedef enum {
+	INT_CHR_VBUS_PLUGIN,
+	INT_CHR_VBUS_PLUGOUT,
+	INT_STATE_BUCK_BACKGROUND,
+	INT_STATE_BUCK_EOC,
+	INT_STATE_BUCK_PRECC0,
+	INT_STATE_BUCK_PRECC1,
+	INT_STATE_BUCK_FASTCC,
+	INT_CHR_WEAKBUS,
+	INT_CHR_SYS_OVP,
+	INT_CHR_BAT_OVP,
+	INT_CHR_VBUS_OVP,
+	INT_CHR_VBUS_UVLO,
+	INT_CHR_ICHR_ITERM,
+	INT_CHIP_TEMP_OVERHEAT,
+	INT_CHIP_MBATPP_DIS_OC_DIG,
+	INT_OTG_BVALID,
+	INT_OTG_VM_UVLO,
+	INT_OTG_VM_OVP,
+	INT_OTG_VBAT_UVLO,
+	INT_OTG_VM_OLP,
+	INT_FLASH_VFLA_UVLO,
+	INT_FLASH_VFLA_OVP,
+	INT_LED1_SHORT,
+	INT_LED1_OPEN,
+	INT_LED2_SHORT,
+	INT_LED2_OPEN,
+	INT_FLASH_TIMEOUT,
+	INT_TORCH_TIMEOUT,
+	INT_DD_VBUS_IN_VALID,
+	INT_WDT_TIMEOUT,
+	INT_SAFETY_TIMEOUT,
+	INT_CHR_AICC_DONE,
+	INT_ADC_TEMP_HT,
+	INT_ADC_TEMP_LT,
+	INT_ADC_JEITA_HOT,
+	INT_ADC_JEITA_WARM,
+	INT_ADC_JEITA_COOL,
+	INT_ADC_JEITA_COLD,
+	INT_VBUS_SOFT_OVP_H,
+	INT_VBUS_SOFT_OVP_L,
+	INT_TYPE_C_L_MIN,
+	INT_TYPE_C_L_MAX,
+	INT_TYPE_C_H_MIN,
+	INT_TYPE_C_H_MAX,
+	INT_TYPE_C_CC_IRQ,
+	INT_TYPE_C_PD_IRQ,
+	INT_CHR_BAT_RECHG,
+	INT_DD_PE_STATUS,
+	INT_BAT_TEMP_H,
+	INT_BAT_TEMP_L,
+	INT_BC12_V2P7_TIMEOUT,
+	INT_BC12_V3P2_TIMEOUT,
+	INT_DD_BC12_STATUS,
+	INT_DD_SWCHR_TOP_RST_SW,
+	INT_DD_SWCHR_TOP_RST_GLOBAL,
+	INT_DD_SWCHR_TOP_RST_LONG_PRESS,
+	INT_DD_SWCHR_TOP_RST_WDT,
+	INT_DD_SWCHR_PLUGOUT_PULSEB_RISING,
+	INT_DD_SWCHR_PLUGIN_PULSEB,
+	INT_DD_SWCHR_TOP_RST_SHIP,
+	INT_DD_SWCHR_TOP_RST_BAT_OC,
+	INT_DD_SWCHR_TOP_RST_BAT_DEAD,
+	INT_DD_SWCHR_BUCK_MODE,
+	INT_DD_SWCHR_LOWQ_MODE,
+	INT_DD_SWCHR_SHIP_MODE,
+	INT_DD_SWCHR_BAT_OC_MODE,
+	INT_DD_SWCHR_BAT_DEAD_MODE,
+	INT_DD_SWCHR_RST_SW_MODE,
+	INT_DD_SWCHR_RST_GLOBAL_MODE,
+	INT_DD_SWCHR_RST_WDT_MODE,
+	INT_DD_SWCHR_RST_LONG_PRESS_MODE,
+	INT_DD_SWCHR_CHR_SUSPEND_STATE,
+	INT_DD_SWCHR_BUCK_PROTECT_STATE,
+	INT_DD_PAM_MODE_DB_RISING,
+	INT_DD_PAM_MODE_DB_FALLING,
+	INT_DD_QI_THR_MODE_DB_RISING,
+	INT_DD_QI_THR_MODE_DB_FALLING,
+	INT_DD_CV_MODE_DB_RISING,
+	INT_DD_CV_MODE_DB_FALLING,
+	INT_DD_QI_ICL_MODE_DB_RISING,
+	INT_DD_QI_ICL_MODE_DB_FALLING,
+	INT_DD_QI_ICC_MODE_DB_RISING,
+	INT_DD_QI_ICC_MODE_DB_FALLING,
+	INT_DD_1MS_TIMER_FINISH,
+	NO_USE_10_4,
+	NO_USE_10_5,
+	NO_USE_10_6,
+	NO_USE_10_7,
+} MT6336_IRQ_ENUM;
+
+/* mt6336 irq extern variable */
+extern struct task_struct *mt6336_thread_handle;
+#if !defined CONFIG_HAS_WAKELOCKS
+extern struct wakeup_source mt6336Thread_lock;
+#else
+extern struct wake_lock mt6336Thread_lock;
+#endif
+extern struct chr_interrupts mt6336_interrupts[];
+/* mt6336 irq extern functions */
+extern void MT6336_EINT_SETTING(void);
+extern int mt6336_thread_kthread(void *x);
+
+extern void mt6336_enable_interrupt(MT6336_IRQ_ENUM intNo, char *str);
+extern void mt6336_disable_interrupt(MT6336_IRQ_ENUM intNo, char *str);
+extern void mt6336_mask_interrupt(MT6336_IRQ_ENUM intNo, char *str);
+extern void mt6336_unmask_interrupt(MT6336_IRQ_ENUM intNo, char *str);
+extern void mt6336_register_interrupt_callback(MT6336_IRQ_ENUM intNo, void (EINT_FUNC_PTR) (void));
+
+#endif /*--__MT6336_IRQ_H--*/

@@ -1,0 +1,32 @@
+menuconfig HIDEEP_TS
+	tristate "HiDeep Touch IC"
+
+if HIDEEP_TS
+
+config CRIMSON_TS
+	tristate "Crimson touch IC"
+	depends on HIDEEP_TS
+	help
+		say Y to enable driver for Touchpanel using HiDeep Crimson Touch IC.
+		if unsure, set N
+		To compile this driver as a module, choose M here : The
+		module will be called.
+
+config LIME_TS
+	tristate "Lime touch IC"
+	depends on HIDEEP_TS
+	help
+		say Y to enable driver for Touchpanel using HiDeep Lime Touch IC.
+		To compile this driver as a module, choose M here : The
+
+		module will be called.
+		To support HIDEEP TS.
+
+config AULU_Z
+	bool "Use Aulu_Z Functoin"
+	depends on LIME_TS || CRIMSON_TS
+	help
+		say Y to enable Aulu_Z function.
+		if unsure, set N
+		To support Aulu_Z.
+endif
